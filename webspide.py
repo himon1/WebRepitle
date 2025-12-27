@@ -9,11 +9,12 @@ from selenium import webdriver
 from selenium.webdriver.edge.service import Service
 from selenium.webdriver.edge.options import Options
 
-# ---------- 配置区 ----------
-EDGE_DRIVER_PATH = r"D:\msedgedriver.exe"  # 修改为你的 msedgedriver 路径
-USER_ANSWERS_URL = "https://www.zhihu.com/people/lan-lan-wan/answers"  # 替换为答主主页
 
-OUTPUT_DIR = Path("D:/code/zhihu_export")   # 输出目录
+# ---------- 配置区 ----------
+EDGE_DRIVER_PATH = r"   "  # 修改为你的 msedgedriver 路径
+USER_ANSWERS_URL = "    "  # 替换为爬取主页
+
+OUTPUT_DIR = Path("   ")   # 输出目录
 IMAGES_DIR = OUTPUT_DIR / "images"
 
 # ---------- 工具函数 ----------
@@ -54,7 +55,7 @@ def save_cookies(driver):
         json.dump(cookies, f)
     print(f"Cookies 已保存到 {COOKIES_FILE}")
 
-def load_cookies(driver, url="https://www.zhihu.com"):
+def load_cookies(driver, url="   "): #输入url
     if COOKIES_FILE.exists():
         with open(COOKIES_FILE, "r", encoding="utf-8") as f:
             cookies = json.load(f)
@@ -119,9 +120,9 @@ def collect_answer_links(driver, url,max_pages=10):
         for a in soup.select("a[href*='/answer/']"):
             href = a.get("href")
             if href:
-                full_url = urljoin("https://www.zhihu.com", href)
+                full_url = urljoin("  ", href) #爬取网站
                 links.append(full_url)
-    print("抓到回答详情页数量:", len(links))
+    print("抓到详情页数量:", len(links))
     return list(set(links))
 
 def process_answer(driver, url):
@@ -160,7 +161,7 @@ def generate_index(files):
     files.sort(key=lambda x: x[1], reverse=True)
     readme_path = OUTPUT_DIR / "README.md"
     with open(readme_path, "w", encoding="utf-8") as f:
-        f.write("# 知乎回答目录索引\n\n")
+        f.write("# 目录索引\n\n")
         for fname, _ in files:
             f.write(f"- [{fname}]({fname})\n")
     print(f"目录索引已生成: {readme_path}")
@@ -172,14 +173,14 @@ def main():
     try:
         # 自动登录逻辑
         if not load_cookies(driver):
-            driver.get("https://www.zhihu.com/signin")
-            print("请扫码登录知乎，等待 3秒...")
+            driver.get("  ") #爬取网站登录页面
+            print("请登录，等待 3秒...")
             time.sleep(3)
             save_cookies(driver)
         driver.get(USER_ANSWERS_URL)
-        # 登录完成后再去收集回答
+        # 登录完成后再去收集
         links = collect_answer_links(driver, USER_ANSWERS_URL,max_pages=10)
-        print(f"共收集到 {len(links)} 个回答链接")
+        print(f"共收集到 {len(links)} 个链接")
         for url in links:
             try:
                 fname, ts = process_answer(driver, url)
