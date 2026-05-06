@@ -1,8 +1,8 @@
-# WebRepitle
-light-weight reptile served for edge web grab 
+# Web-spider
+light-weight spider served for edge web grab 
 ## 📖 项目简介
 一个轻量化的爬虫程序  
-支持微博、贴吧、知乎等主流平台的公开信息抓取并批量导出爬取内容，保存为本地文件。
+支持爬虫进行微博、贴吧、知乎等主流平台的公开信息抓取并批量导出爬取内容，保存为本地文件。
 
 ### 🔧 技术原理
 基于**Selenium+beautifulsoap**编写  
